@@ -22,11 +22,11 @@ export default function CreateEventForm() {
   const [date, setDate] = useState('');
   const [goalAmount, setGoalAmount] = useState('');
   const [message, setMessage] = useState('');
-  const [impactAreas, setImpactAreas] = useState<ImpactArea[]>([]);
+  const [impactArea, setImpactArea] = useState<ImpactArea | null>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name || !hostName || !date || !goalAmount || impactAreas.length === 0) return;
+    if (!name || !hostName || !date || !impactArea) return;
 
     const id = `camp-${Date.now()}`;
     dispatch({
@@ -37,9 +37,9 @@ export default function CreateEventForm() {
         name,
         hostName,
         date,
-        goalAmount: Number(goalAmount),
+        ...(goalAmount ? { goalAmount: Number(goalAmount) } : {}),
         message,
-        impactAreas,
+        impactArea,
         createdAt: new Date().toISOString(),
       },
     });
@@ -48,7 +48,7 @@ export default function CreateEventForm() {
       payload: {
         id: `notif-${Date.now()}`,
         type: 'success',
-        message: `"${name}" fundraiser created!`,
+        message: `Your celebration page for "${name}" is live!`,
       },
     });
     navigate(`/event/${id}`);
@@ -56,9 +56,9 @@ export default function CreateEventForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-8">
-      {/* Event Type */}
+      {/* Occasion */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-3">Event Type</label>
+        <label className="block text-sm font-medium text-gray-700 mb-3">Occasion</label>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {eventTypes.map(({ value, label, icon: Icon }) => (
             <button
@@ -80,9 +80,9 @@ export default function CreateEventForm() {
         </div>
       </div>
 
-      {/* Event Name */}
+      {/* Page title */}
       <div>
-        <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Event Name</label>
+        <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Page Title</label>
         <input
           id="name"
           type="text"
@@ -108,10 +108,10 @@ export default function CreateEventForm() {
         />
       </div>
 
-      {/* Date & Goal */}
+      {/* Date & Optional Goal */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <div>
-          <label htmlFor="date" className="block text-sm font-medium text-gray-700 mb-1">Event Date</label>
+          <label htmlFor="date" className="block text-sm font-medium text-gray-700 mb-1">Date</label>
           <input
             id="date"
             type="date"
@@ -122,43 +122,47 @@ export default function CreateEventForm() {
           />
         </div>
         <div>
-          <label htmlFor="goal" className="block text-sm font-medium text-gray-700 mb-1">Fundraising Goal ($)</label>
-          <input
-            id="goal"
-            type="number"
-            min="1"
-            value={goalAmount}
-            onChange={(e) => setGoalAmount(e.target.value)}
-            placeholder="1000"
-            required
-            className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none"
-          />
+          <label htmlFor="goal" className="block text-sm font-medium text-gray-700 mb-1">
+            Group Goal <span className="text-gray-400 font-normal">(optional)</span>
+          </label>
+          <div className="relative">
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">$</span>
+            <input
+              id="goal"
+              type="number"
+              min="1"
+              value={goalAmount}
+              onChange={(e) => setGoalAmount(e.target.value)}
+              placeholder="e.g. 500"
+              className="w-full border border-gray-300 rounded-lg pl-7 pr-4 py-2.5 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none"
+            />
+          </div>
         </div>
       </div>
 
       {/* Message */}
       <div>
-        <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">Personal Message</label>
+        <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">Your Message</label>
         <textarea
           id="message"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           rows={3}
-          placeholder="Tell your friends why this cause matters to you..."
+          placeholder="No gifts please — but if you'd like to do something, let's support this cause together."
           className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none resize-none"
         />
       </div>
 
-      {/* Impact Areas */}
-      <ImpactAreaSelector selected={impactAreas} onChange={setImpactAreas} />
+      {/* Cause */}
+      <ImpactAreaSelector selected={impactArea} onChange={setImpactArea} />
 
       {/* Submit */}
       <button
         type="submit"
-        disabled={!name || !hostName || !date || !goalAmount || impactAreas.length === 0}
+        disabled={!name || !hostName || !date || !impactArea}
         className="w-full bg-orange-500 hover:bg-orange-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-bold py-3.5 rounded-lg transition-colors text-lg"
       >
-        Create Fundraiser
+        Create My Celebration Page
       </button>
     </form>
   );

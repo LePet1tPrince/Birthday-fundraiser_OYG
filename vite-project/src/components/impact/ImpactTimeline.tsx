@@ -28,8 +28,8 @@ export default function ImpactTimeline() {
                       <span className="font-bold text-orange-600 text-sm">${donation.amount}</span>
                     </div>
                     <p className="text-xs text-gray-500">
-                      Donated to <span className="font-medium">{campaign?.name ?? 'a campaign'}</span>
-                      {' '}&middot; {IMPACT_RATES[donation.impactArea].label}
+                      Gave to <span className="font-medium">{campaign?.name ?? 'a celebration'}</span>
+                      {campaign && <>{' '}&middot; {IMPACT_RATES[campaign.impactArea].label}</>}
                     </p>
                     {donation.message && (
                       <p className="text-xs text-gray-400 mt-1 italic">&ldquo;{donation.message}&rdquo;</p>

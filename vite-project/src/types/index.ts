@@ -7,9 +7,9 @@ export interface Campaign {
   name: string;
   hostName: string;
   date: string;
-  goalAmount: number;
+  goalAmount?: number;
   message: string;
-  impactAreas: ImpactArea[];
+  impactArea: ImpactArea;
   createdAt: string;
 }
 
@@ -19,7 +19,6 @@ export interface Donation {
   donorName: string;
   amount: number;
   message: string;
-  impactArea: ImpactArea;
   createdAt: string;
 }
 

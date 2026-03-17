@@ -33,13 +33,13 @@ export default function ShareButtons({ campaignName }: ShareButtonsProps) {
     {
       label: 'Email',
       icon: Mail,
-      onClick: () => window.open(`mailto:?subject=Support ${encodeURIComponent(campaignName)}&body=Check out this fundraiser: ${encodeURIComponent(window.location.href)}`, '_blank'),
+      onClick: () => window.open(`mailto:?subject=Celebrate ${encodeURIComponent(campaignName)}&body=Join this celebration on Orange You Glad — no gifts, just impact: ${encodeURIComponent(window.location.href)}`, '_blank'),
     },
   ];
 
   return (
     <div className="text-center">
-      <h3 className="text-lg font-bold text-gray-900 mb-4">Share This Campaign</h3>
+      <h3 className="text-lg font-bold text-gray-900 mb-4">Share This Celebration</h3>
       <div className="flex items-center justify-center gap-3 flex-wrap">
         {buttons.map((btn) => (
           <button

@@ -17,7 +17,7 @@ export default function Navbar() {
             to="/create"
             className="bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors no-underline"
           >
-            Start Fundraiser
+            Create a Page
           </Link>
         </div>
       </div>

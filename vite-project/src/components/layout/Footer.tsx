@@ -12,21 +12,21 @@ export default function Footer() {
               <span>Orange You Glad</span>
             </div>
             <p className="text-white/80 text-sm">
-              Turning celebrations into lasting impact for children around the world.
+              Skip the gifts. Celebrate by supporting a cause together.
             </p>
           </div>
           <div>
             <h3 className="font-semibold mb-3">Quick Links</h3>
             <div className="flex flex-col gap-2 text-sm text-white/80">
               <Link to="/" className="hover:text-white transition-colors no-underline text-white/80">Home</Link>
-              <Link to="/create" className="hover:text-white transition-colors no-underline text-white/80">Create Event</Link>
+              <Link to="/create" className="hover:text-white transition-colors no-underline text-white/80">Create a Page</Link>
               <Link to="/impact" className="hover:text-white transition-colors no-underline text-white/80">Impact Dashboard</Link>
             </div>
           </div>
           <div>
             <h3 className="font-semibold mb-3">Our Mission</h3>
             <p className="text-white/80 text-sm">
-              Every celebration is an opportunity to change lives. We connect generosity with impact across water, education, health, and emergency relief.
+              A celebration page is not a fundraiser. It's a graceful way to redirect gift intent toward something that lasts.
             </p>
           </div>
         </div>

@@ -1,5 +1,9 @@
 import { MapPin } from 'lucide-react';
-import { COUNTRIES } from '../../data/mockData';
+
+const COUNTRIES = [
+  'Kenya', 'Uganda', 'Tanzania', 'India', 'Bangladesh',
+  'Guatemala', 'Haiti', 'Philippines', 'Cambodia', 'Nepal',
+];
 
 export default function GeographicReach() {
   return (

@@ -1,20 +1,25 @@
-import { PartyPopper, Share2, Globe } from 'lucide-react';
+import { Sparkles, Share2, Users, BarChart3 } from 'lucide-react';
 
 const steps = [
   {
-    icon: PartyPopper,
-    title: 'Create Your Event',
-    description: 'Set up a fundraising page for your birthday, anniversary, or any celebration in minutes.',
+    icon: Sparkles,
+    title: 'Create your page',
+    description: 'Choose your occasion, pick one cause, write a message, and optionally set a group goal. Takes about two minutes.',
   },
   {
     icon: Share2,
-    title: 'Share With Friends',
-    description: 'Invite friends and family to donate instead of buying gifts. Every dollar makes a difference.',
+    title: 'Share the link',
+    description: 'Send it to friends and family. They give directly to Orange You Glad and leave you a note.',
   },
   {
-    icon: Globe,
-    title: 'See Your Impact',
-    description: 'Watch your donations transform into clean water, education, healthcare, and emergency relief.',
+    icon: Users,
+    title: 'Watch it grow',
+    description: 'See who\'s celebrating with you in real time. The page shows shared momentum, not a donation ticker.',
+  },
+  {
+    icon: BarChart3,
+    title: 'See your impact',
+    description: 'After your celebration, get a recap — total raised, how many people joined, and exactly what it meant in the real world.',
   },
 ];
 
@@ -26,17 +31,17 @@ export default function HowItWorks() {
           How It Works
         </h2>
         <p className="text-gray-600 text-center max-w-2xl mx-auto mb-14">
-          Three simple steps to turn your celebration into lasting change.
+          A celebration page, not a fundraiser. The difference matters.
         </p>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {steps.map((step, i) => (
             <div key={i} className="text-center">
               <div className="w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center mx-auto mb-5">
                 <step.icon className="w-8 h-8 text-orange-500" />
               </div>
               <div className="text-sm font-bold text-orange-500 mb-2">Step {i + 1}</div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">{step.title}</h3>
-              <p className="text-gray-600">{step.description}</p>
+              <h3 className="text-lg font-bold text-gray-900 mb-2">{step.title}</h3>
+              <p className="text-gray-600 text-sm">{step.description}</p>
             </div>
           ))}
         </div>
