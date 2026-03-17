@@ -1,32 +1,32 @@
-import { Droplets, BookOpen, Heart, ShieldAlert, Users, Sparkles } from 'lucide-react';
+import { Shield, Zap, Package, Star, Users, Sparkles } from 'lucide-react';
 import type { Campaign, Donation, ImpactArea } from '../../types';
 import { IMPACT_RATES, getImpactUnits } from '../../data/mockData';
 import AnimatedCounter from '../shared/AnimatedCounter';
 
 const AREA_ICONS: Record<ImpactArea, React.ElementType> = {
-  water: Droplets,
-  education: BookOpen,
-  health: Heart,
-  emergency: ShieldAlert,
+  protect: Shield,
+  respond: Zap,
+  equip: Package,
+  empower: Star,
 };
 
 const IMPACT_STORY: Record<ImpactArea, (units: number, firstName: string) => string> = {
-  water: (units, name) =>
+  protect: (units, name) =>
     units >= 1
-      ? `${name}'s birthday is providing clean water to ${units} ${units === 1 ? 'person' : 'people'}. That's what skipping the gifts looks like.`
-      : `Every dollar gets closer — clean water access costs $25 per person.`,
-  education: (units, name) =>
+      ? `${name}'s birthday reached ${units} ${units === 1 ? 'person' : 'people'} with Protect programming. That's what skipping the gifts looks like.`
+      : `Every dollar goes toward protecting children from abuse and violence.`,
+  respond: (units, name) =>
     units >= 1
-      ? `Together, you're funding a month of school for ${units} ${units === 1 ? 'child' : 'children'} — all because ${name} said "no gifts please."`
-      : `Every dollar counts toward a child's education.`,
-  health: (units, name) =>
+      ? `Together, you reached ${units} ${units === 1 ? 'person' : 'people'} with Respond programming — all because ${name} said "no gifts please."`
+      : `Every dollar supports long-term recovery in crisis zones.`,
+  equip: (units, name) =>
     units >= 1
-      ? `${name}'s crew just funded ${units} medical ${units === 1 ? 'treatment' : 'treatments'}. That's the power of a group showing up together.`
-      : `Every dollar helps fund life-changing medical care.`,
-  emergency: (units, name) =>
+      ? `${name}'s crew reached ${units} ${units === 1 ? 'person' : 'people'} with Equip programming. That's the power of a group showing up together.`
+      : `Every dollar helps families thrive with tools and training.`,
+  empower: (units, name) =>
     units >= 1
-      ? `${units} emergency supply ${units === 1 ? 'kit' : 'kits'} — delivered because ${name}'s friends chose impact over stuff.`
-      : `Every dollar goes directly to emergency relief.`,
+      ? `${units} ${units === 1 ? 'person' : 'people'} reached with Empower programming — because ${name}'s friends chose impact over stuff.`
+      : `Every dollar uplifts women, girls, and communities.`,
 };
 
 interface CelebrationRecapProps {
@@ -49,7 +49,7 @@ export default function CelebrationRecap({ campaign, donations }: CelebrationRec
           <Sparkles className="w-8 h-8 text-orange-400 mx-auto mb-3" />
           <h2 className="text-xl font-bold text-gray-800 mb-2">Your recap will live here</h2>
           <p className="text-gray-500 text-sm max-w-md mx-auto">
-            Once people start celebrating with you, this section will show your shared impact — total raised, contributor count, and exactly what it means in the real world.
+            Once people start celebrating with you, this section will show your shared impact — total raised, how many people joined, and exactly how many people you reached together.
           </p>
         </div>
       </section>
@@ -69,7 +69,6 @@ export default function CelebrationRecap({ campaign, donations }: CelebrationRec
 
         {/* Stats */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-12">
-          {/* Total raised */}
           <div className="bg-white/15 backdrop-blur-sm rounded-2xl p-6">
             <p className="text-white/70 text-xs font-semibold uppercase tracking-wide mb-2">Total given</p>
             <p className="text-5xl font-extrabold mb-1">
@@ -78,7 +77,6 @@ export default function CelebrationRecap({ campaign, donations }: CelebrationRec
             <p className="text-white/70 text-sm">raised together</p>
           </div>
 
-          {/* Contributors */}
           <div className="bg-white/15 backdrop-blur-sm rounded-2xl p-6">
             <p className="text-white/70 text-xs font-semibold uppercase tracking-wide mb-2">Group size</p>
             <p className="text-5xl font-extrabold mb-1 flex items-center justify-center gap-2">
@@ -88,14 +86,13 @@ export default function CelebrationRecap({ campaign, donations }: CelebrationRec
             <p className="text-white/70 text-sm">{contributorCount === 1 ? 'person celebrated' : 'people celebrated'} with you</p>
           </div>
 
-          {/* Impact — highlighted */}
           <div className="bg-white/25 backdrop-blur-sm rounded-2xl p-6 ring-2 ring-white/50">
-            <p className="text-white/70 text-xs font-semibold uppercase tracking-wide mb-2">Real impact</p>
+            <p className="text-white/70 text-xs font-semibold uppercase tracking-wide mb-2">People reached</p>
             <p className="text-5xl font-extrabold mb-1 flex items-center justify-center gap-2">
               <ImpactIcon className="w-8 h-8 opacity-80" />
               <AnimatedCounter end={impactUnits} />
             </p>
-            <p className="text-white/80 text-sm font-medium">{rate.unitLabel}</p>
+            <p className="text-white/80 text-sm font-medium">with {rate.label} programming</p>
           </div>
         </div>
 

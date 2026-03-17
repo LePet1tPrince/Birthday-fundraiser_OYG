@@ -3,23 +3,21 @@ import { mockUser } from '../data/mockData';
 import ProfileSidebar from '../components/profile/ProfileSidebar';
 import MyCelebrationTab from '../components/profile/MyCelebrationTab';
 import MyImpactTab from '../components/profile/MyImpactTab';
-import GiveAGiftTab from '../components/profile/GiveAGiftTab';
 
-type Tab = 'celebration' | 'impact' | 'give';
+type Tab = 'impact' | 'celebration';
 
 const TAB_LABELS: Record<Tab, string> = {
-  celebration: 'My Celebration',
   impact: 'My Impact',
-  give: 'Give a Gift',
+  celebration: 'My Celebrations',
 };
 
 export default function ProfilePage() {
-  const [activeTab, setActiveTab] = useState<Tab>('celebration');
+  const [activeTab, setActiveTab] = useState<Tab>('impact');
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8 flex gap-6 items-start">
       {/* Sidebar */}
-      <ProfileSidebar activeTab={activeTab} onTabChange={setActiveTab} />
+      <ProfileSidebar />
 
       {/* Main content */}
       <div className="flex-1 min-w-0">
@@ -51,9 +49,8 @@ export default function ProfilePage() {
         </div>
 
         {/* Tab content */}
-        {activeTab === 'celebration' && <MyCelebrationTab />}
         {activeTab === 'impact' && <MyImpactTab />}
-        {activeTab === 'give' && <GiveAGiftTab />}
+        {activeTab === 'celebration' && <MyCelebrationTab />}
       </div>
     </div>
   );

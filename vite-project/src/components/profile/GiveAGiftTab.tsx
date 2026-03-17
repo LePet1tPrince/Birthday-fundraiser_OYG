@@ -1,14 +1,7 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight, Cake, Sparkles } from 'lucide-react';
-import { useAppContext } from '../../hooks/useAppContext';
-import { getCampaignTotal, getCampaignContributors } from '../../data/mockData';
-import CampaignCard from '../landing/CampaignCard';
+import { ArrowRight, Cake } from 'lucide-react';
 
 export default function GiveAGiftTab() {
-  const { state } = useAppContext();
-
-  const otherCelebrations = state.campaigns.filter((c) => c.hostName !== 'Timothy Brooks');
-
   return (
     <div className="space-y-6">
       {/* Create CTA */}
@@ -26,29 +19,6 @@ export default function GiveAGiftTab() {
           <ArrowRight className="w-4 h-4" />
         </Link>
       </div>
-
-      {/* Other active celebrations to give to */}
-      {otherCelebrations.length > 0 && (
-        <div className="bg-white rounded-2xl border border-gray-200 p-6">
-          <div className="flex items-center gap-2 mb-5">
-            <Sparkles className="w-5 h-5 text-orange-500" />
-            <h3 className="font-bold text-gray-900">Celebrations you can join</h3>
-          </div>
-          <p className="text-sm text-gray-500 mb-5">
-            Friends and family with active pages — give instead of buying a gift.
-          </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {otherCelebrations.map((campaign) => (
-              <CampaignCard
-                key={campaign.id}
-                campaign={campaign}
-                totalRaised={getCampaignTotal(campaign.id, state.donations)}
-                contributorCount={getCampaignContributors(campaign.id, state.donations)}
-              />
-            ))}
-          </div>
-        </div>
-      )}
     </div>
   );
 }

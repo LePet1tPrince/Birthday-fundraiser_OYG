@@ -1,5 +1,28 @@
 import type { Campaign, Donation, GlobalStats, ImpactArea, ImpactRate, User } from '../types';
 
+export interface PersonalGift {
+  id: string;
+  label: string;
+  impactArea: ImpactArea;
+  amount: number;
+  frequency: 'monthly' | 'one-time';
+  date: string;
+}
+
+export const monthlySubscriptions: PersonalGift[] = [
+  { id: 'sub-1', label: 'Protect — Monthly', impactArea: 'protect', amount: 35, frequency: 'monthly', date: '2026-03-01' },
+  { id: 'sub-2', label: 'Protect — Monthly', impactArea: 'protect', amount: 35, frequency: 'monthly', date: '2026-02-01' },
+  { id: 'sub-3', label: 'Protect — Monthly', impactArea: 'protect', amount: 35, frequency: 'monthly', date: '2026-01-01' },
+  { id: 'sub-4', label: 'Respond — Monthly', impactArea: 'respond', amount: 25, frequency: 'monthly', date: '2026-03-01' },
+  { id: 'sub-5', label: 'Respond — Monthly', impactArea: 'respond', amount: 25, frequency: 'monthly', date: '2026-02-01' },
+  { id: 'sub-6', label: 'Respond — Monthly', impactArea: 'respond', amount: 25, frequency: 'monthly', date: '2026-01-01' },
+];
+
+export const oneTimeGifts: PersonalGift[] = [
+  { id: 'gift-1', label: 'Empower — One-time', impactArea: 'empower', amount: 150, frequency: 'one-time', date: '2026-01-20' },
+  { id: 'gift-2', label: 'Respond — Crisis Response', impactArea: 'respond', amount: 75, frequency: 'one-time', date: '2025-12-10' },
+];
+
 export const mockUser: User = {
   id: 'user-1',
   firstName: 'Timothy',
@@ -10,32 +33,32 @@ export const mockUser: User = {
 };
 
 export const IMPACT_RATES: Record<ImpactArea, ImpactRate> = {
-  water: {
-    label: 'Clean Water',
-    costPerUnit: 25,
-    unitLabel: 'people provided with clean water',
-    icon: 'Droplets',
-    color: 'blue',
-  },
-  education: {
-    label: 'Education',
-    costPerUnit: 30,
-    unitLabel: 'children educated for a month',
-    icon: 'BookOpen',
-    color: 'green',
-  },
-  health: {
-    label: 'Healthcare',
+  protect: {
+    label: 'Protect',
     costPerUnit: 20,
-    unitLabel: 'medical treatments provided',
-    icon: 'Heart',
+    unitLabel: 'people reached with Protect programming',
+    icon: 'Shield',
+    color: 'purple',
+  },
+  respond: {
+    label: 'Respond',
+    costPerUnit: 15,
+    unitLabel: 'people reached with Respond programming',
+    icon: 'Zap',
     color: 'red',
   },
-  emergency: {
-    label: 'Emergency Relief',
-    costPerUnit: 15,
-    unitLabel: 'emergency supply kits delivered',
-    icon: 'ShieldAlert',
+  equip: {
+    label: 'Equip',
+    costPerUnit: 25,
+    unitLabel: 'people reached with Equip programming',
+    icon: 'Package',
+    color: 'blue',
+  },
+  empower: {
+    label: 'Empower',
+    costPerUnit: 30,
+    unitLabel: 'people reached with Empower programming',
+    icon: 'Star',
     color: 'amber',
   },
 };
@@ -48,8 +71,8 @@ export const sampleCampaigns: Campaign[] = [
     hostName: 'Timothy Brooks',
     date: '2026-04-20',
     goalAmount: 1000,
-    message: "No gifts please — but if you want to do something for my 40th, let's get clean water to communities who need it. That would mean everything.",
-    impactArea: 'water',
+    message: "No gifts please — but if you want to do something for my 40th, let's help protect children from abuse and violence. That would mean everything.",
+    impactArea: 'protect',
     createdAt: '2026-03-01T10:00:00Z',
   },
   {
@@ -58,8 +81,8 @@ export const sampleCampaigns: Campaign[] = [
     name: "Marcus Turns 45",
     hostName: 'Marcus Williams',
     date: '2026-05-03',
-    message: "Honestly, I don't need more stuff. If you're feeling generous, help me support kids' education instead. Best birthday gift I can imagine.",
-    impactArea: 'education',
+    message: "Honestly, I don't need more stuff. If you're feeling generous, help me support communities in crisis instead. Best birthday gift I can imagine.",
+    impactArea: 'respond',
     createdAt: '2026-02-20T14:30:00Z',
   },
   {
@@ -69,8 +92,8 @@ export const sampleCampaigns: Campaign[] = [
     hostName: 'Sofia Reyes',
     date: '2026-06-10',
     goalAmount: 2000,
-    message: "Fifty years on this planet and the one thing I want is for more people to have access to healthcare. No gifts — just join me in making that happen.",
-    impactArea: 'health',
+    message: "Fifty years on this planet and the one thing I want is to help families thrive. No gifts — just join me in making that happen.",
+    impactArea: 'equip',
     createdAt: '2026-01-20T09:00:00Z',
   },
 ];

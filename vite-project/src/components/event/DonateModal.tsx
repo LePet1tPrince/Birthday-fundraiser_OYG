@@ -4,6 +4,7 @@ import { useAppContext } from '../../hooks/useAppContext';
 import { IMPACT_RATES, getImpactUnits } from '../../data/mockData';
 import Modal from '../shared/Modal';
 
+
 const PRESET_AMOUNTS = [25, 50, 100, 250];
 
 interface DonateModalProps {

@@ -1,5 +1,5 @@
 export type EventType = 'birthday' | 'anniversary' | 'memorial' | 'other';
-export type ImpactArea = 'water' | 'education' | 'health' | 'emergency';
+export type ImpactArea = 'protect' | 'respond' | 'equip' | 'empower';
 
 export interface Campaign {
   id: string;

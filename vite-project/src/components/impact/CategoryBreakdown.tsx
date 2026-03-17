@@ -3,7 +3,7 @@ import { IMPACT_RATES } from '../../data/mockData';
 import ImpactCard from '../shared/ImpactCard';
 import type { ImpactArea } from '../../types';
 
-const AREAS: ImpactArea[] = ['water', 'education', 'health', 'emergency'];
+const AREAS: ImpactArea[] = ['protect', 'respond', 'equip', 'empower'];
 
 export default function CategoryBreakdown() {
   const { state } = useAppContext();

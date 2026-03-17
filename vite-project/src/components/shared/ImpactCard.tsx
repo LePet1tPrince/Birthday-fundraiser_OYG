@@ -1,19 +1,19 @@
-import { Droplets, BookOpen, Heart, ShieldAlert } from 'lucide-react';
+import { Shield, Zap, Package, Star } from 'lucide-react';
 import type { ImpactArea } from '../../types';
 import { IMPACT_RATES } from '../../data/mockData';
 
 const ICONS: Record<ImpactArea, React.ElementType> = {
-  water: Droplets,
-  education: BookOpen,
-  health: Heart,
-  emergency: ShieldAlert,
+  protect: Shield,
+  respond: Zap,
+  equip: Package,
+  empower: Star,
 };
 
 const COLOR_MAP: Record<ImpactArea, { bg: string; icon: string; border: string }> = {
-  water: { bg: 'bg-blue-50', icon: 'text-blue-500', border: 'border-blue-200' },
-  education: { bg: 'bg-green-50', icon: 'text-green-500', border: 'border-green-200' },
-  health: { bg: 'bg-red-50', icon: 'text-red-500', border: 'border-red-200' },
-  emergency: { bg: 'bg-amber-50', icon: 'text-amber-500', border: 'border-amber-200' },
+  protect: { bg: 'bg-purple-50', icon: 'text-purple-500', border: 'border-purple-200' },
+  respond: { bg: 'bg-red-50', icon: 'text-red-500', border: 'border-red-200' },
+  equip: { bg: 'bg-blue-50', icon: 'text-blue-500', border: 'border-blue-200' },
+  empower: { bg: 'bg-amber-50', icon: 'text-amber-500', border: 'border-amber-200' },
 };
 
 interface ImpactCardProps {

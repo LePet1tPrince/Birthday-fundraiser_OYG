@@ -1,11 +1,11 @@
-import { Droplets, BookOpen, Heart, ShieldAlert } from 'lucide-react';
+import { Shield, Zap, Package, Star } from 'lucide-react';
 import type { ImpactArea } from '../../types';
 
 const areas: { value: ImpactArea; label: string; icon: React.ElementType; description: string }[] = [
-  { value: 'water', label: 'Clean Water', icon: Droplets, description: 'Provide safe drinking water to communities in need' },
-  { value: 'education', label: 'Education', icon: BookOpen, description: 'Fund schooling and learning for children' },
-  { value: 'health', label: 'Healthcare', icon: Heart, description: 'Support medical treatment and health access' },
-  { value: 'emergency', label: 'Emergency Relief', icon: ShieldAlert, description: 'Deliver emergency supplies to crisis areas' },
+  { value: 'protect', label: 'Protect', icon: Shield, description: 'Help protect children from abuse and violence through prevention and healing programs.' },
+  { value: 'respond', label: 'Respond', icon: Zap, description: 'Long-term programs in crisis zones, beyond emergency relief, in partnership with the World Food Program.' },
+  { value: 'equip', label: 'Equip', icon: Package, description: 'Help families thrive with school supplies, clean water, health kits, and community training.' },
+  { value: 'empower', label: 'Empower', icon: Star, description: 'Uplift women, girls, and communities through business training, savings groups, and leadership programs.' },
 ];
 
 interface ImpactAreaSelectorProps {
@@ -19,7 +19,7 @@ export default function ImpactAreaSelector({ selected, onChange }: ImpactAreaSel
       <label className="block text-sm font-medium text-gray-700 mb-1">
         Choose a cause
       </label>
-      <p className="text-xs text-gray-400 mb-3">Pick one cause area — your guests will give directly to it.</p>
+      <p className="text-xs text-gray-400 mb-3">Pick one — your guests will give directly to it.</p>
       <div className="grid grid-cols-2 gap-3">
         {areas.map(({ value, label, icon: Icon, description }) => {
           const isSelected = selected === value;
