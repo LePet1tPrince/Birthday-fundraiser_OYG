@@ -1,4 +1,13 @@
-import type { Campaign, Donation, GlobalStats, ImpactArea, ImpactRate } from '../types';
+import type { Campaign, Donation, GlobalStats, ImpactArea, ImpactRate, User } from '../types';
+
+export const mockUser: User = {
+  id: 'user-1',
+  firstName: 'Timothy',
+  lastName: 'Brooks',
+  initials: 'TB',
+  memberSince: 'August 2020',
+  activeCampaignId: 'camp-1',
+};
 
 export const IMPACT_RATES: Record<ImpactArea, ImpactRate> = {
   water: {
@@ -35,11 +44,11 @@ export const sampleCampaigns: Campaign[] = [
   {
     id: 'camp-1',
     eventType: 'birthday',
-    name: "Emma's 30th Birthday",
-    hostName: 'Emma Johnson',
-    date: '2026-04-15',
+    name: "Timothy's 40th Birthday",
+    hostName: 'Timothy Brooks',
+    date: '2026-04-20',
     goalAmount: 1000,
-    message: "No gifts please — but if you want to do something for my 30th, let's get clean water to communities who need it. That would mean everything.",
+    message: "No gifts please — but if you want to do something for my 40th, let's get clean water to communities who need it. That would mean everything.",
     impactArea: 'water',
     createdAt: '2026-03-01T10:00:00Z',
   },

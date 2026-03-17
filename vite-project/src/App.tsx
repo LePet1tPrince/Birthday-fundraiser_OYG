@@ -1,21 +1,28 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import ProfileLayout from './components/layout/ProfileLayout';
 import Layout from './components/layout/Layout';
-import LandingPage from './pages/LandingPage';
+import ProfilePage from './pages/ProfilePage';
 import CreateEventPage from './pages/CreateEventPage';
 import EventPage from './pages/EventPage';
-import ImpactDashboardPage from './pages/ImpactDashboardPage';
 import NotFoundPage from './pages/NotFoundPage';
 
 export default function App() {
   return (
     <Routes>
-      <Route element={<Layout />}>
-        <Route path="/" element={<LandingPage />} />
+      {/* Authenticated profile experience */}
+      <Route element={<ProfileLayout />}>
+        <Route path="/profile" element={<ProfilePage />} />
         <Route path="/create" element={<CreateEventPage />} />
+      </Route>
+
+      {/* Public event page — shareable link for guests */}
+      <Route element={<Layout />}>
         <Route path="/event/:id" element={<EventPage />} />
-        <Route path="/impact" element={<ImpactDashboardPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
+
+      {/* Redirect root to profile */}
+      <Route path="/" element={<Navigate to="/profile" replace />} />
     </Routes>
   );
 }

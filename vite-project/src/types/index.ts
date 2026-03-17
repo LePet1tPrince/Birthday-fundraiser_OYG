@@ -49,6 +49,15 @@ export interface AppState {
   globalStats: GlobalStats;
 }
 
+export interface User {
+  id: string;
+  firstName: string;
+  lastName: string;
+  initials: string;
+  memberSince: string;
+  activeCampaignId: string | null;
+}
+
 export type AppAction =
   | { type: 'CREATE_CAMPAIGN'; payload: Campaign }
   | { type: 'ADD_DONATION'; payload: Donation }
