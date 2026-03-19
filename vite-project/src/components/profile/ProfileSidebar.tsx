@@ -49,7 +49,7 @@ export default function ProfileSidebar() {
         </div>
 
         {/* Reach — hero number */}
-        <div className="bg-orange-50 rounded-xl p-4 text-center">
+        <div className={`bg-orange-50 rounded-xl p-4 text-center ${hasCommunity ? 'mb-3' : ''}`}>
           <p className="text-3xl font-extrabold text-orange-600">
             {(hasCommunity ? combinedUnits : personalUnits).toLocaleString()}
           </p>
@@ -58,6 +58,22 @@ export default function ProfileSidebar() {
             ${(hasCommunity ? combinedTotal : personalTotal).toLocaleString()} {hasCommunity ? 'combined giving' : 'given'}
           </p>
         </div>
+
+        {/* Personal vs community split — only when community giving exists */}
+        {hasCommunity && (
+          <div className="grid grid-cols-2 gap-2 text-center">
+            <div className="bg-gray-50 rounded-xl p-3">
+              <p className="text-lg font-extrabold text-gray-800">{personalUnits}</p>
+              <p className="text-xs text-gray-500 mt-0.5">from you</p>
+              <p className="text-xs text-gray-400">${personalTotal.toLocaleString()}</p>
+            </div>
+            <div className="bg-gray-50 rounded-xl p-3">
+              <p className="text-lg font-extrabold text-gray-800">{communityUnits}</p>
+              <p className="text-xs text-gray-500 mt-0.5">from community</p>
+              <p className="text-xs text-gray-400">${communityTotal.toLocaleString()}</p>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Active celebration mini card */}

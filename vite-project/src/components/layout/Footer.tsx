@@ -7,7 +7,7 @@ export default function Footer() {
   const navigate = useNavigate();
 
   function handleClearCache() {
-    sessionStorage.clear();
+    localStorage.clear();
     dispatch({ type: 'RESET' });
     navigate('/profile');
   }

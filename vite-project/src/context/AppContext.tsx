@@ -15,7 +15,7 @@ const defaultState: AppState = {
 
 function loadInitialState(): AppState {
   try {
-    const saved = sessionStorage.getItem(SESSION_KEY);
+    const saved = localStorage.getItem(SESSION_KEY);
     if (saved) {
       const parsed = JSON.parse(saved);
       return { ...defaultState, ...parsed, notifications: [] };
@@ -71,7 +71,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     try {
-      sessionStorage.setItem(SESSION_KEY, JSON.stringify(state));
+      localStorage.setItem(SESSION_KEY, JSON.stringify(state));
     } catch {
       // ignore storage errors
     }
