@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Plus, ExternalLink } from 'lucide-react';
 import { useAppContext } from '../../hooks/useAppContext';
-import { mockUser, IMPACT_RATES, getImpactUnits } from '../../data/mockData';
+import { IMPACT_RATES, getImpactUnits } from '../../data/mockData';
 import CelebrationRecap from '../event/CelebrationRecap';
 import DonorsList from '../event/DonorsList';
 import DonateModal from '../event/DonateModal';
@@ -13,8 +13,8 @@ export default function MyCelebrationTab() {
   const { state } = useAppContext();
   const [showDonateModal, setShowDonateModal] = useState(false);
 
-  const campaign = mockUser.activeCampaignId
-    ? state.campaigns.find((c) => c.id === mockUser.activeCampaignId)
+  const campaign = state.activeCampaignId
+    ? state.campaigns.find((c) => c.id === state.activeCampaignId)
     : null;
 
   if (!campaign) {

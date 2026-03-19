@@ -5,12 +5,10 @@ interface DonorItemProps {
 }
 
 export default function DonorItem({ donation }: DonorItemProps) {
-  const initials = donation.donorName
-    .split(' ')
-    .map((n) => n[0])
-    .join('')
-    .toUpperCase()
-    .slice(0, 2);
+  const displayName = donation.anonymizeName ? 'Anonymous' : donation.donorName;
+  const initials = donation.anonymizeName
+    ? '?'
+    : donation.donorName.split(' ').map((n) => n[0]).join('').toUpperCase().slice(0, 2);
 
   return (
     <div className="flex items-start gap-3 py-4 border-b border-gray-100 last:border-0">
@@ -19,8 +17,10 @@ export default function DonorItem({ donation }: DonorItemProps) {
       </div>
       <div className="flex-1 min-w-0">
         <div className="flex items-center justify-between gap-2">
-          <span className="font-semibold text-gray-900 text-sm">{donation.donorName}</span>
-          <span className="text-xs text-gray-400 shrink-0">${donation.amount}</span>
+          <span className="font-semibold text-gray-900 text-sm">{displayName}</span>
+          <span className="text-xs text-gray-400 shrink-0">
+            {donation.anonymizeAmount ? 'Gift hidden' : `$${donation.amount}`}
+          </span>
         </div>
         {donation.message ? (
           <p className="text-gray-600 text-sm mt-1 leading-snug">{donation.message}</p>

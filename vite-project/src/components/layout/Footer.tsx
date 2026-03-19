@@ -1,7 +1,17 @@
 import { Heart } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAppContext } from '../../hooks/useAppContext';
 
 export default function Footer() {
+  const { dispatch } = useAppContext();
+  const navigate = useNavigate();
+
+  function handleClearCache() {
+    sessionStorage.clear();
+    dispatch({ type: 'RESET' });
+    navigate('/profile');
+  }
+
   return (
     <footer className="bg-gradient-to-r from-orange-500 to-amber-500 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -32,6 +42,12 @@ export default function Footer() {
         </div>
         <div className="border-t border-white/20 mt-8 pt-8 text-center text-sm text-white/60">
           <p>&copy; {new Date().getFullYear()} Orange You Glad. Demo project &mdash; no real transactions.</p>
+          <button
+            onClick={handleClearCache}
+            className="mt-4 text-white/40 hover:text-white/70 text-xs underline transition-colors"
+          >
+            Clear Cache
+          </button>
         </div>
       </div>
     </footer>

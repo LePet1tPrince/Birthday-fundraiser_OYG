@@ -10,8 +10,8 @@ export default function Navbar() {
           <span>Orange You Glad</span>
         </Link>
         <div className="flex items-center gap-6">
-          <Link to="/impact" className="text-gray-600 hover:text-orange-500 transition-colors text-sm font-medium no-underline">
-            Impact
+          <Link to="/profile" className="text-gray-600 hover:text-orange-500 transition-colors text-sm font-medium no-underline">
+            Profile
           </Link>
           <Link
             to="/create"

@@ -3,6 +3,7 @@ import { Heart, LogOut } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { mockUser } from '../../data/mockData';
 import NotificationToast from '../shared/NotificationToast';
+import Footer from './Footer';
 
 export default function ProfileLayout() {
   return (
@@ -30,6 +31,7 @@ export default function ProfileLayout() {
         <Outlet />
       </main>
 
+      <Footer />
       <NotificationToast />
     </div>
   );

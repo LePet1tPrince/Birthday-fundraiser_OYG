@@ -1,6 +1,6 @@
 import { Shield, Zap, Package, Star, TrendingUp, RefreshCw, Gift } from 'lucide-react';
 import { useAppContext } from '../../hooks/useAppContext';
-import { mockUser, IMPACT_RATES, getCampaignTotal, getImpactUnits, monthlySubscriptions, oneTimeGifts } from '../../data/mockData';
+import { IMPACT_RATES, getCampaignTotal, getImpactUnits, monthlySubscriptions, oneTimeGifts } from '../../data/mockData';
 import type { ImpactArea } from '../../types';
 import AnimatedCounter from '../shared/AnimatedCounter';
 
@@ -21,9 +21,7 @@ const AREA_COLORS: Record<ImpactArea, string> = {
 export default function MyImpactTab() {
   const { state } = useAppContext();
 
-  const myCampaigns = state.campaigns.filter(
-    (c) => c.hostName === `${mockUser.firstName} ${mockUser.lastName}`
-  );
+  const myCampaigns = state.campaigns.filter((c) => state.userCampaignIds.includes(c.id));
 
   // --- Personal giving ---
   const allPersonal = [...monthlySubscriptions, ...oneTimeGifts];
@@ -64,33 +62,37 @@ export default function MyImpactTab() {
   const combinedTotal = personalTotal + communityTotal;
   const combinedUnits = personalImpactUnits + communityImpactUnits;
 
+  const hasCommunity = communityContributors > 0;
+
   return (
     <div className="space-y-6">
 
-      {/* ── Combined total banner ── */}
+      {/* ── Impact banner ── */}
       <div className="bg-gradient-to-br from-orange-500 via-orange-400 to-amber-300 rounded-2xl p-6 text-white">
         <p className="text-xs font-bold uppercase tracking-widest text-white/70 mb-2">Your total impact</p>
-        {/* Reach is the hero */}
         <div className="text-center mb-4">
           <p className="text-6xl font-extrabold leading-none">
-            <AnimatedCounter end={combinedUnits} />
+            <AnimatedCounter end={hasCommunity ? combinedUnits : personalImpactUnits} />
           </p>
           <p className="text-white/90 text-lg font-semibold mt-1">people reached</p>
-          <p className="text-white/60 text-sm mt-1">${combinedTotal.toLocaleString()} combined giving</p>
+          <p className="text-white/60 text-sm mt-1">
+            ${(hasCommunity ? combinedTotal : personalTotal).toLocaleString()} {hasCommunity ? 'combined giving' : 'given'}
+          </p>
         </div>
-        {/* Secondary stats */}
-        <div className="grid grid-cols-2 gap-3">
-          <div className="bg-white/15 rounded-xl p-3 text-center">
-            <p className="text-xl font-extrabold"><AnimatedCounter end={personalImpactUnits} /></p>
-            <p className="text-white/70 text-xs mt-0.5">from your giving</p>
-            <p className="text-white/50 text-xs">${personalTotal.toLocaleString()}</p>
+        {hasCommunity && (
+          <div className="grid grid-cols-2 gap-3">
+            <div className="bg-white/15 rounded-xl p-3 text-center">
+              <p className="text-xl font-extrabold"><AnimatedCounter end={personalImpactUnits} /></p>
+              <p className="text-white/70 text-xs mt-0.5">from your giving</p>
+              <p className="text-white/50 text-xs">${personalTotal.toLocaleString()}</p>
+            </div>
+            <div className="bg-white/15 rounded-xl p-3 text-center">
+              <p className="text-xl font-extrabold"><AnimatedCounter end={communityImpactUnits} /></p>
+              <p className="text-white/70 text-xs mt-0.5">from your community</p>
+              <p className="text-white/50 text-xs">${communityTotal.toLocaleString()} · {communityContributors} people</p>
+            </div>
           </div>
-          <div className="bg-white/15 rounded-xl p-3 text-center">
-            <p className="text-xl font-extrabold"><AnimatedCounter end={communityImpactUnits} /></p>
-            <p className="text-white/70 text-xs mt-0.5">from your community</p>
-            <p className="text-white/50 text-xs">${communityTotal.toLocaleString()} · {communityContributors} people</p>
-          </div>
-        </div>
+        )}
       </div>
 
       {/* ── My Personal Giving ── */}
@@ -175,8 +177,8 @@ export default function MyImpactTab() {
         )}
       </div>
 
-      {/* ── Community Impact ── */}
-      <div className="bg-white rounded-2xl border border-gray-200 p-6">
+      {/* ── Community Impact — only shown once user has celebration page contributions ── */}
+      {hasCommunity && <div className="bg-white rounded-2xl border border-gray-200 p-6">
         <div className="flex items-center justify-between mb-1">
           <div className="flex items-center gap-2">
             <Star className="w-5 h-5 text-orange-500" />
@@ -189,74 +191,68 @@ export default function MyImpactTab() {
         </div>
         <p className="text-xs text-gray-400 mb-5">What your friends and family gave through your celebration pages</p>
 
-        {communityContributors === 0 ? (
-          <p className="text-sm text-gray-400 text-center py-4">No community contributions yet — share your celebration page to get started.</p>
-        ) : (
-          <>
-            {/* Summary stats */}
-            <div className="grid grid-cols-2 gap-3 mb-5">
-              <div className="bg-orange-50 rounded-xl p-3 text-center">
-                <p className="text-xl font-extrabold text-orange-600">{communityContributors}</p>
-                <p className="text-xs text-gray-500 mt-0.5">people celebrated with you</p>
-              </div>
-              <div className="bg-orange-50 rounded-xl p-3 text-center">
-                <p className="text-xl font-extrabold text-orange-600">{communityImpactUnits}</p>
-                <p className="text-xs text-gray-500 mt-0.5">people reached</p>
-              </div>
-            </div>
+        {/* Summary stats */}
+        <div className="grid grid-cols-2 gap-3 mb-5">
+          <div className="bg-orange-50 rounded-xl p-3 text-center">
+            <p className="text-xl font-extrabold text-orange-600">{communityContributors}</p>
+            <p className="text-xs text-gray-500 mt-0.5">people celebrated with you</p>
+          </div>
+          <div className="bg-orange-50 rounded-xl p-3 text-center">
+            <p className="text-xl font-extrabold text-orange-600">{communityImpactUnits}</p>
+            <p className="text-xs text-gray-500 mt-0.5">people reached</p>
+          </div>
+        </div>
 
-            {/* By cause */}
+        {/* By cause */}
+        <div className="space-y-2">
+          {Object.values(communityImpactByCause).map(({ area, amount, units }) => {
+            const Icon = AREA_ICONS[area];
+            const colorClass = AREA_COLORS[area];
+            return (
+              <div key={area} className={`flex items-center gap-3 p-3 rounded-xl border ${colorClass}`}>
+                <div className="p-2 rounded-lg bg-white">
+                  <Icon className={`w-4 h-4 ${colorClass.split(' ')[0]}`} />
+                </div>
+                <div className="flex-1">
+                  <p className="text-sm font-semibold text-gray-900">{IMPACT_RATES[area].label}</p>
+                  <p className="text-xs text-gray-500">${amount.toLocaleString()} from your community</p>
+                </div>
+                <div className="text-right shrink-0">
+                  <p className="text-lg font-extrabold text-gray-900">{units}</p>
+                  <p className="text-xs text-gray-500">reached</p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Campaign breakdown */}
+        {myCampaigns.length > 0 && (
+          <div className="mt-4 pt-4 border-t border-gray-100">
+            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-3">By celebration</p>
             <div className="space-y-2">
-              {Object.values(communityImpactByCause).map(({ area, amount, units }) => {
-                const Icon = AREA_ICONS[area];
-                const colorClass = AREA_COLORS[area];
+              {myCampaigns.map((campaign) => {
+                const total = getCampaignTotal(campaign.id, state.donations);
+                const contributors = state.donations.filter((d) => d.campaignId === campaign.id).length;
+                const units = getImpactUnits(campaign.impactArea, total);
                 return (
-                  <div key={area} className={`flex items-center gap-3 p-3 rounded-xl border ${colorClass}`}>
-                    <div className="p-2 rounded-lg bg-white">
-                      <Icon className={`w-4 h-4 ${colorClass.split(' ')[0]}`} />
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-sm font-semibold text-gray-900">{IMPACT_RATES[area].label}</p>
-                      <p className="text-xs text-gray-500">${amount.toLocaleString()} from your community</p>
+                  <div key={campaign.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-semibold text-gray-900 truncate">{campaign.name}</p>
+                      <p className="text-xs text-gray-500">{contributors} contributors · {IMPACT_RATES[campaign.impactArea].label}</p>
                     </div>
                     <div className="text-right shrink-0">
-                      <p className="text-lg font-extrabold text-gray-900">{units}</p>
+                      <p className="text-base font-extrabold text-gray-900">{units}</p>
                       <p className="text-xs text-gray-500">reached</p>
+                      <p className="text-xs text-gray-400">${total.toLocaleString()}</p>
                     </div>
                   </div>
                 );
               })}
             </div>
-
-            {/* Campaign breakdown */}
-            {myCampaigns.length > 0 && (
-              <div className="mt-4 pt-4 border-t border-gray-100">
-                <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-3">By celebration</p>
-                <div className="space-y-2">
-                  {myCampaigns.map((campaign) => {
-                    const total = getCampaignTotal(campaign.id, state.donations);
-                    const contributors = state.donations.filter((d) => d.campaignId === campaign.id).length;
-                    const units = getImpactUnits(campaign.impactArea, total);
-                    return (
-                      <div key={campaign.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm font-semibold text-gray-900 truncate">{campaign.name}</p>
-                          <p className="text-xs text-gray-500">{contributors} contributors · {IMPACT_RATES[campaign.impactArea].label}</p>
-                        </div>
-                        <div className="text-right shrink-0">
-                          <p className="text-base font-extrabold text-gray-900">{units}</p>
-                          <p className="text-xs text-gray-500">reached</p>
-                          <p className="text-xs text-gray-400">${total.toLocaleString()}</p>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-          </>
+          </div>
         )}
-      </div>
+      </div>}
     </div>
   );
 }

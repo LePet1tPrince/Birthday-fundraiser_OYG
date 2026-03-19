@@ -20,7 +20,7 @@ export default function CreateEventForm() {
   const [name, setName] = useState('');
   const [hostName, setHostName] = useState('');
   const [date, setDate] = useState('');
-  const [goalAmount, setGoalAmount] = useState('');
+
   const [message, setMessage] = useState('');
   const [impactArea, setImpactArea] = useState<ImpactArea | null>(null);
 
@@ -37,7 +37,7 @@ export default function CreateEventForm() {
         name,
         hostName,
         date,
-        ...(goalAmount ? { goalAmount: Number(goalAmount) } : {}),
+
         message,
         impactArea,
         createdAt: new Date().toISOString(),
@@ -108,36 +108,17 @@ export default function CreateEventForm() {
         />
       </div>
 
-      {/* Date & Optional Goal */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        <div>
-          <label htmlFor="date" className="block text-sm font-medium text-gray-700 mb-1">Date</label>
-          <input
-            id="date"
-            type="date"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-            required
-            className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none"
-          />
-        </div>
-        <div>
-          <label htmlFor="goal" className="block text-sm font-medium text-gray-700 mb-1">
-            Group Goal <span className="text-gray-400 font-normal">(optional)</span>
-          </label>
-          <div className="relative">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">$</span>
-            <input
-              id="goal"
-              type="number"
-              min="1"
-              value={goalAmount}
-              onChange={(e) => setGoalAmount(e.target.value)}
-              placeholder="e.g. 500"
-              className="w-full border border-gray-300 rounded-lg pl-7 pr-4 py-2.5 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none"
-            />
-          </div>
-        </div>
+      {/* Date */}
+      <div>
+        <label htmlFor="date" className="block text-sm font-medium text-gray-700 mb-1">Date</label>
+        <input
+          id="date"
+          type="date"
+          value={date}
+          onChange={(e) => setDate(e.target.value)}
+          required
+          className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none"
+        />
       </div>
 
       {/* Message */}

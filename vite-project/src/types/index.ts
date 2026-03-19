@@ -20,6 +20,8 @@ export interface Donation {
   amount: number;
   message: string;
   createdAt: string;
+  anonymizeName?: boolean;
+  anonymizeAmount?: boolean;
 }
 
 export interface Notification {
@@ -47,6 +49,8 @@ export interface AppState {
   donations: Donation[];
   notifications: Notification[];
   globalStats: GlobalStats;
+  activeCampaignId: string | null;
+  userCampaignIds: string[];
 }
 
 export interface User {
@@ -55,11 +59,12 @@ export interface User {
   lastName: string;
   initials: string;
   memberSince: string;
-  activeCampaignId: string | null;
 }
 
 export type AppAction =
   | { type: 'CREATE_CAMPAIGN'; payload: Campaign }
   | { type: 'ADD_DONATION'; payload: Donation }
   | { type: 'ADD_NOTIFICATION'; payload: Notification }
-  | { type: 'DISMISS_NOTIFICATION'; payload: string };
+  | { type: 'DISMISS_NOTIFICATION'; payload: string }
+  | { type: 'SET_ACTIVE_CAMPAIGN'; payload: string | null }
+  | { type: 'RESET' };

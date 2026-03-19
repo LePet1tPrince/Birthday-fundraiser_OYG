@@ -1,36 +1,34 @@
 import { ExternalLink, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import type { User } from '../../types';
 import { mockUser, getCampaignTotal, getCampaignContributors, getImpactUnits, IMPACT_RATES, monthlySubscriptions, oneTimeGifts } from '../../data/mockData';
 import { useAppContext } from '../../hooks/useAppContext';
 
 export default function ProfileSidebar() {
   const { state } = useAppContext();
-  const user: User = mockUser;
+  const user = mockUser;
 
-  const campaign = user.activeCampaignId
-    ? state.campaigns.find((c) => c.id === user.activeCampaignId)
+  const campaign = state.activeCampaignId
+    ? state.campaigns.find((c) => c.id === state.activeCampaignId)
     : null;
 
   // Personal giving total
-  const personalTotal = [...monthlySubscriptions, ...oneTimeGifts]
-    .reduce((sum, g) => sum + g.amount, 0);
-
-  // Community giving total (from campaign donations)
-  const myCampaigns = state.campaigns.filter((c) => c.hostName === `${user.firstName} ${user.lastName}`);
-  const communityTotal = state.donations
-    .filter((d) => myCampaigns.some((c) => c.id === d.campaignId))
-    .reduce((sum, d) => sum + d.amount, 0);
-
-  const combinedTotal = personalTotal + communityTotal;
-
-  const personalUnits = [...monthlySubscriptions, ...oneTimeGifts].reduce(
+  const allPersonal = [...monthlySubscriptions, ...oneTimeGifts];
+  const personalTotal = allPersonal.reduce((sum, g) => sum + g.amount, 0);
+  const personalUnits = allPersonal.reduce(
     (sum, g) => sum + Math.floor(g.amount / IMPACT_RATES[g.impactArea].costPerUnit), 0
   );
+
+  // Community giving total (from campaign donations)
+  const myCampaigns = state.campaigns.filter((c) => state.userCampaignIds.includes(c.id));
+  const communityDonations = state.donations.filter((d) => myCampaigns.some((c) => c.id === d.campaignId));
+  const communityTotal = communityDonations.reduce((sum, d) => sum + d.amount, 0);
   const communityUnits = myCampaigns.reduce((sum, c) => {
     const total = getCampaignTotal(c.id, state.donations);
     return sum + getImpactUnits(c.impactArea, total);
   }, 0);
+
+  const hasCommunity = communityDonations.length > 0;
+  const combinedTotal = personalTotal + communityTotal;
   const combinedUnits = personalUnits + communityUnits;
 
   const campaignDonations = campaign
@@ -50,25 +48,15 @@ export default function ProfileSidebar() {
           <p className="text-xs text-gray-400 mt-1">Member since {user.memberSince}</p>
         </div>
 
-        {/* Combined reach — hero number */}
-        <div className="bg-orange-50 rounded-xl p-4 text-center mb-3">
-          <p className="text-3xl font-extrabold text-orange-600">{combinedUnits.toLocaleString()}</p>
+        {/* Reach — hero number */}
+        <div className="bg-orange-50 rounded-xl p-4 text-center">
+          <p className="text-3xl font-extrabold text-orange-600">
+            {(hasCommunity ? combinedUnits : personalUnits).toLocaleString()}
+          </p>
           <p className="text-sm font-semibold text-gray-700 mt-0.5">people reached</p>
-          <p className="text-xs text-gray-400 mt-1">${combinedTotal.toLocaleString()} combined giving</p>
-        </div>
-
-        {/* Personal vs community split */}
-        <div className="grid grid-cols-2 gap-2 text-center">
-          <div className="bg-gray-50 rounded-xl p-3">
-            <p className="text-lg font-extrabold text-gray-800">{personalUnits}</p>
-            <p className="text-xs text-gray-500 mt-0.5">from you</p>
-            <p className="text-xs text-gray-400">${personalTotal.toLocaleString()}</p>
-          </div>
-          <div className="bg-gray-50 rounded-xl p-3">
-            <p className="text-lg font-extrabold text-gray-800">{communityUnits}</p>
-            <p className="text-xs text-gray-500 mt-0.5">from community</p>
-            <p className="text-xs text-gray-400">${communityTotal.toLocaleString()}</p>
-          </div>
+          <p className="text-xs text-gray-400 mt-1">
+            ${(hasCommunity ? combinedTotal : personalTotal).toLocaleString()} {hasCommunity ? 'combined giving' : 'given'}
+          </p>
         </div>
       </div>
 

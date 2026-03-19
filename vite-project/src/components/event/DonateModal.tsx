@@ -19,6 +19,8 @@ export default function DonateModal({ campaign, onClose }: DonateModalProps) {
   const [customAmount, setCustomAmount] = useState('');
   const [isCustom, setIsCustom] = useState(false);
   const [message, setMessage] = useState('');
+  const [anonymizeName, setAnonymizeName] = useState(false);
+  const [anonymizeAmount, setAnonymizeAmount] = useState(false);
 
   const finalAmount = isCustom ? Number(customAmount) : amount;
   const rate = IMPACT_RATES[campaign.impactArea];
@@ -37,6 +39,8 @@ export default function DonateModal({ campaign, onClose }: DonateModalProps) {
         amount: finalAmount,
         message,
         createdAt: new Date().toISOString(),
+        anonymizeName,
+        anonymizeAmount,
       },
     });
     dispatch({
@@ -135,6 +139,28 @@ export default function DonateModal({ campaign, onClose }: DonateModalProps) {
             placeholder="Say something nice..."
             className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none resize-none"
           />
+        </div>
+
+        {/* Privacy options */}
+        <div className="space-y-2">
+          <label className="flex items-center gap-3 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={anonymizeName}
+              onChange={(e) => setAnonymizeName(e.target.checked)}
+              className="w-4 h-4 rounded border-gray-300 text-orange-500 focus:ring-orange-500"
+            />
+            <span className="text-sm text-gray-700">Keep my name anonymous</span>
+          </label>
+          <label className="flex items-center gap-3 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={anonymizeAmount}
+              onChange={(e) => setAnonymizeAmount(e.target.checked)}
+              className="w-4 h-4 rounded border-gray-300 text-orange-500 focus:ring-orange-500"
+            />
+            <span className="text-sm text-gray-700">Keep my gift amount private</span>
+          </label>
         </div>
 
         <button

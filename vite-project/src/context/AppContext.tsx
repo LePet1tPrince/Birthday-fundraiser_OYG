@@ -1,18 +1,42 @@
-import { createContext, useReducer, type ReactNode } from 'react';
+import { createContext, useReducer, useEffect, type ReactNode } from 'react';
 import type { AppState, AppAction } from '../types';
 import { sampleCampaigns, sampleDonations, initialGlobalStats } from '../data/mockData';
 
-const initialState: AppState = {
+const SESSION_KEY = 'oyg_app_state';
+
+const defaultState: AppState = {
   campaigns: sampleCampaigns,
   donations: sampleDonations,
   notifications: [],
   globalStats: initialGlobalStats,
+  activeCampaignId: null,
+  userCampaignIds: [],
 };
+
+function loadInitialState(): AppState {
+  try {
+    const saved = sessionStorage.getItem(SESSION_KEY);
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      return { ...defaultState, ...parsed, notifications: [] };
+    }
+  } catch {
+    // ignore parse errors
+  }
+  return defaultState;
+}
 
 function appReducer(state: AppState, action: AppAction): AppState {
   switch (action.type) {
     case 'CREATE_CAMPAIGN':
-      return { ...state, campaigns: [...state.campaigns, action.payload] };
+      return {
+        ...state,
+        campaigns: [...state.campaigns, action.payload],
+        activeCampaignId: action.payload.id,
+        userCampaignIds: [...state.userCampaignIds, action.payload.id],
+      };
+    case 'SET_ACTIVE_CAMPAIGN':
+      return { ...state, activeCampaignId: action.payload };
     case 'ADD_DONATION':
       return {
         ...state,
@@ -30,6 +54,8 @@ function appReducer(state: AppState, action: AppAction): AppState {
         ...state,
         notifications: state.notifications.filter((n) => n.id !== action.payload),
       };
+    case 'RESET':
+      return defaultState;
     default:
       return state;
   }
@@ -41,7 +67,15 @@ export const AppContext = createContext<{
 } | null>(null);
 
 export function AppProvider({ children }: { children: ReactNode }) {
-  const [state, dispatch] = useReducer(appReducer, initialState);
+  const [state, dispatch] = useReducer(appReducer, undefined, loadInitialState);
+
+  useEffect(() => {
+    try {
+      sessionStorage.setItem(SESSION_KEY, JSON.stringify(state));
+    } catch {
+      // ignore storage errors
+    }
+  }, [state]);
 
   return (
     <AppContext.Provider value={{ state, dispatch }}>
