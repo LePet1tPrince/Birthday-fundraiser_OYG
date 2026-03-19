@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Cake, Heart, Flame, Star } from 'lucide-react';
 import type { EventType, ImpactArea } from '../../types';
 import { useAppContext } from '../../hooks/useAppContext';
+import { mockUser } from '../../data/mockData';
 import ImpactAreaSelector from './ImpactAreaSelector';
+import ShareModal from '../event/ShareModal';
 
 const eventTypes: { value: EventType; label: string; icon: React.ElementType }[] = [
   { value: 'birthday', label: 'Birthday', icon: Cake },
@@ -13,20 +14,18 @@ const eventTypes: { value: EventType; label: string; icon: React.ElementType }[]
 ];
 
 export default function CreateEventForm() {
-  const navigate = useNavigate();
   const { dispatch } = useAppContext();
 
   const [eventType, setEventType] = useState<EventType>('birthday');
   const [name, setName] = useState('');
-  const [hostName, setHostName] = useState('');
   const [date, setDate] = useState('');
-
   const [message, setMessage] = useState('');
   const [impactArea, setImpactArea] = useState<ImpactArea | null>(null);
+  const [newCampaign, setNewCampaign] = useState<{ id: string; name: string } | null>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name || !hostName || !date || !impactArea) return;
+    if (!name || !date || !impactArea) return;
 
     const id = `camp-${Date.now()}`;
     dispatch({
@@ -35,26 +34,19 @@ export default function CreateEventForm() {
         id,
         eventType,
         name,
-        hostName,
+        hostName: `${mockUser.firstName} ${mockUser.lastName}`,
         date,
-
         message,
         impactArea,
         createdAt: new Date().toISOString(),
       },
     });
-    dispatch({
-      type: 'ADD_NOTIFICATION',
-      payload: {
-        id: `notif-${Date.now()}`,
-        type: 'success',
-        message: `Your celebration page for "${name}" is live!`,
-      },
-    });
-    navigate(`/event/${id}`);
+    setNewCampaign({ id, name });
   };
 
   return (
+    <>
+    {newCampaign && <ShareModal campaignId={newCampaign.id} campaignName={newCampaign.name} />}
     <form onSubmit={handleSubmit} className="space-y-8">
       {/* Occasion */}
       <div>
@@ -94,20 +86,6 @@ export default function CreateEventForm() {
         />
       </div>
 
-      {/* Host Name */}
-      <div>
-        <label htmlFor="host" className="block text-sm font-medium text-gray-700 mb-1">Your Name</label>
-        <input
-          id="host"
-          type="text"
-          value={hostName}
-          onChange={(e) => setHostName(e.target.value)}
-          placeholder="Your full name"
-          required
-          className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none"
-        />
-      </div>
-
       {/* Date */}
       <div>
         <label htmlFor="date" className="block text-sm font-medium text-gray-700 mb-1">Date</label>
@@ -140,11 +118,12 @@ export default function CreateEventForm() {
       {/* Submit */}
       <button
         type="submit"
-        disabled={!name || !hostName || !date || !impactArea}
+        disabled={!name || !date || !impactArea}
         className="w-full bg-orange-500 hover:bg-orange-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-bold py-3.5 rounded-lg transition-colors text-lg"
       >
         Create My Celebration Page
       </button>
     </form>
+    </>
   );
 }
