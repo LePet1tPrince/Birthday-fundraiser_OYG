@@ -69,7 +69,7 @@ export default function ProfileSidebar() {
             </div>
             <div className="bg-gray-50 rounded-xl p-3">
               <p className="text-lg font-extrabold text-gray-800">{communityUnits}</p>
-              <p className="text-xs text-gray-500 mt-0.5">from community</p>
+              <p className="text-xs text-gray-500 mt-0.5">from your community</p>
               <p className="text-xs text-gray-400">${communityTotal.toLocaleString()}</p>
             </div>
           </div>
