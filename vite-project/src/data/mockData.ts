@@ -25,9 +25,9 @@ export const oneTimeGifts: PersonalGift[] = [
 
 export const mockUser: User = {
   id: 'user-1',
-  firstName: 'Timothy',
+  firstName: 'Suki',
   lastName: 'Brooks',
-  initials: 'TB',
+  initials: 'SB',
   memberSince: 'August 2020',
 };
 

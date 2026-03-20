@@ -30,7 +30,6 @@ export default function Footer() {
             <div className="flex flex-col gap-2 text-sm text-white/80">
               <Link to="/" className="hover:text-white transition-colors no-underline text-white/80">Home</Link>
               <Link to="/create" className="hover:text-white transition-colors no-underline text-white/80">Create a Page</Link>
-              <Link to="/impact" className="hover:text-white transition-colors no-underline text-white/80">Impact Dashboard</Link>
             </div>
           </div>
           <div>

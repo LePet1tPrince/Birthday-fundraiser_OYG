@@ -1,6 +1,7 @@
-import { ExternalLink, ArrowRight } from 'lucide-react';
+import { ArrowRight, ExternalLink } from 'lucide-react';
+import { IMPACT_RATES, getCampaignContributors, getCampaignTotal, getImpactUnits, mockUser, monthlySubscriptions, oneTimeGifts } from '../../data/mockData';
+
 import { Link } from 'react-router-dom';
-import { mockUser, getCampaignTotal, getCampaignContributors, getImpactUnits, IMPACT_RATES, monthlySubscriptions, oneTimeGifts } from '../../data/mockData';
 import { useAppContext } from '../../hooks/useAppContext';
 
 export default function ProfileSidebar() {
