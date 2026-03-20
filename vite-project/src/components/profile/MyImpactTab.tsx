@@ -1,8 +1,9 @@
-import { Shield, Zap, Package, Star, TrendingUp, RefreshCw, Gift } from 'lucide-react';
-import { useAppContext } from '../../hooks/useAppContext';
+import { Gift, Package, RefreshCw, Shield, Star, TrendingUp, Zap } from 'lucide-react';
 import { IMPACT_RATES, getCampaignTotal, getImpactUnits, monthlySubscriptions, oneTimeGifts } from '../../data/mockData';
-import type { ImpactArea } from '../../types';
+
 import AnimatedCounter from '../shared/AnimatedCounter';
+import type { ImpactArea } from '../../types';
+import { useAppContext } from '../../hooks/useAppContext';
 
 const AREA_ICONS: Record<ImpactArea, React.ElementType> = {
   protect: Shield,
@@ -182,7 +183,7 @@ export default function MyImpactTab() {
         <div className="flex items-center justify-between mb-1">
           <div className="flex items-center gap-2">
             <Star className="w-5 h-5 text-orange-500" />
-            <h3 className="font-bold text-gray-900">Community Impact</h3>
+            <h3 className="font-bold text-gray-900">Collaborative Impact</h3>
           </div>
           <div className="text-right">
             <p className="text-sm font-extrabold text-gray-900">{communityImpactUnits} reached</p>

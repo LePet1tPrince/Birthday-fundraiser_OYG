@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { X, Mail, Copy, Check } from 'lucide-react';
+import { X, Mail, Copy, Check, Heart } from 'lucide-react';
 import type { Campaign } from '../../types';
 import { IMPACT_RATES, getImpactUnits } from '../../data/mockData';
 
@@ -10,7 +10,7 @@ interface RecapEmailModalProps {
   onClose: () => void;
 }
 
-type Tab = 'host' | 'guests';
+type Tab = 'host' | 'guests' | 'post';
 
 export default function RecapEmailModal({ campaign, totalRaised, contributorCount, onClose }: RecapEmailModalProps) {
   const [activeTab, setActiveTab] = useState<Tab>('host');
@@ -42,8 +42,24 @@ Together, we reached ${impactUnits} people with ${rate.label} programming — an
 
 Thank you for celebrating with purpose. 🧡`;
 
+  const postCaption = `Feeling so grateful. 🧡
+
+${contributorCount} of my people came together and reached ${impactUnits} people through ${rate.label} programming — because they chose impact over gifts.
+
+No party favors. Just love, and something that lasts.
+
+Thank you. Every single one of you. 🧡
+
+#OrangeYouGlad #CelebrateWithPurpose`;
+
   const handleCopyGuestReport = () => {
     navigator.clipboard.writeText(guestMessage);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleCopyCaption = () => {
+    navigator.clipboard.writeText(postCaption);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -86,6 +102,14 @@ Thank you for celebrating with purpose. 🧡`;
           >
             Guest Report
           </button>
+          <button
+            onClick={() => setActiveTab('post')}
+            className={`flex-1 px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
+              activeTab === 'post' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'
+            }`}
+          >
+            Share Post
+          </button>
         </div>
 
         {/* Content */}
@@ -106,7 +130,7 @@ Thank you for celebrating with purpose. 🧡`;
                 {hostBody}
               </div>
             </>
-          ) : (
+          ) : activeTab === 'guests' ? (
             <>
               <p className="text-xs text-gray-400 mb-3">Share this with your guests — shows the impact you created together, without any dollar amounts.</p>
 
@@ -122,6 +146,59 @@ Thank you for celebrating with purpose. 🧡`;
                 {guestMessage}
               </div>
             </>
+          ) : (
+            <>
+              <p className="text-xs text-gray-400 mb-3">A shareable post card for Instagram, Facebook, or anywhere. Screenshot the card and copy the caption below.</p>
+
+              {/* Post card */}
+              <div className="relative rounded-2xl overflow-hidden mb-4" style={{ aspectRatio: '1 / 1' }}>
+                {/* Background gradient layers */}
+                <div className="absolute inset-0 bg-gradient-to-br from-orange-400 via-amber-400 to-orange-600" />
+                {/* Decorative blobs */}
+                <div className="absolute -top-12 -right-12 w-48 h-48 rounded-full bg-white/10" />
+                <div className="absolute -bottom-16 -left-10 w-56 h-56 rounded-full bg-white/10" />
+                <div className="absolute top-1/3 right-8 w-24 h-24 rounded-full bg-amber-300/30" />
+                <div className="absolute bottom-1/4 left-1/4 w-16 h-16 rounded-full bg-orange-300/20" />
+                {/* Dot texture */}
+                <div className="absolute inset-0 opacity-10"
+                  style={{ backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)', backgroundSize: '20px 20px' }}
+                />
+
+                {/* Content */}
+                <div className="relative z-10 h-full flex flex-col items-center justify-center text-white text-center px-8 gap-3">
+                  <div className="flex items-center gap-1.5 text-white/80 text-sm font-semibold tracking-wide uppercase">
+                    <Heart className="w-4 h-4 fill-white/60" />
+                    <span>Orange You Glad</span>
+                  </div>
+
+                  <p className="text-lg font-semibold text-white/90 leading-snug">
+                    Together, we reached
+                  </p>
+
+                  <div className="bg-white/20 backdrop-blur-sm rounded-2xl px-8 py-4 border border-white/30">
+                    <p className="text-6xl font-extrabold tracking-tight leading-none">{impactUnits}</p>
+                    <p className="text-sm font-semibold mt-1 text-white/90">people</p>
+                  </div>
+
+                  <p className="text-base font-medium text-white/90 leading-snug">
+                    through <span className="font-bold">{rate.label}</span> programming
+                  </p>
+
+                  <p className="text-white/70 text-sm mt-1">
+                    {contributorCount} friend{contributorCount !== 1 ? 's' : ''} · {campaign.name}
+                  </p>
+
+                  <p className="text-white/60 text-xs mt-2 font-medium">
+                    Skip the gifts. Celebrate with purpose.
+                  </p>
+                </div>
+              </div>
+
+              {/* Caption preview */}
+              <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">
+                {postCaption}
+              </div>
+            </>
           )}
         </div>
 
@@ -135,13 +212,21 @@ Thank you for celebrating with purpose. 🧡`;
               <Mail className="w-4 h-4" />
               Open in Email
             </button>
-          ) : (
+          ) : activeTab === 'guests' ? (
             <button
               onClick={handleCopyGuestReport}
               className="w-full inline-flex items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 rounded-xl transition-colors"
             >
               {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
               {copied ? 'Copied!' : 'Copy Message'}
+            </button>
+          ) : (
+            <button
+              onClick={handleCopyCaption}
+              className="w-full inline-flex items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 rounded-xl transition-colors"
+            >
+              {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+              {copied ? 'Caption Copied!' : 'Copy Caption'}
             </button>
           )}
         </div>
